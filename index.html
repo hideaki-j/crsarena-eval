@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRS Arena Evaluation Tool</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .upload-section {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: #667eea;
+            background: #f0f1ff;
+        }
+
+        .upload-section.dragover {
+            border-color: #667eea;
+            background: #e8ebff;
+            transform: scale(1.02);
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .success {
+            background: #efe;
+            border: 1px solid #cfc;
+            color: #3c3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .results {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .results h2 {
+            color: #333;
+            margin: 30px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            text-align: center;
+        }
+
+        .charts-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            min-width: 450px;
+            max-width: 550px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-wrapper h3 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .chart-wrapper canvas {
+            max-height: 400px;
+        }
+
+        .system-table-wrapper {
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-table-wrapper h3 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        #systemTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        #systemTable th,
+        #systemTable td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        #systemTable thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        #systemTable th {
+            font-weight: 600;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        #systemTable tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        #systemTable tbody tr:hover {
+            background: #e8ebff;
+        }
+
+        #systemTable td:first-child {
+            font-weight: 600;
+            text-align: left;
+            color: #667eea;
+        }
+
+        #systemTable td {
+            font-family: "Courier New", monospace;
+            color: #555;
+
+        .turn-analysis-wrapper {
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .turn-analysis-wrapper h3 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .turn-analysis-wrapper canvas {
+            max-height: 400px;
+        }
+        }
+
+        .system-chart-wrapper {
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .system-chart-wrapper h3 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .system-chart-container {
+            position: relative;
+            height: 420px;
+        }
+
+        .file-info {
+            background: #e8ebff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .file-info strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 CRS Arena Evaluation Tool</h1>
+        <p class="subtitle">Upload your run file to evaluate against CRS Arena benchmarks</p>
+
+        <div class="upload-section" id="uploadSection">
+            <div class="upload-icon">📤</div>
+            <p style="margin-bottom: 20px; color: #666; font-size: 1.1em;">
+                Drag and drop your run file here or click to browse
+            </p>
+            <div class="file-input-wrapper">
+                <label for="fileInput" class="upload-btn">Choose File</label>
+                <input type="file" id="fileInput" accept=".json">
+            </div>
+        </div>
+
+        <div class="file-info" id="fileInfo"></div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #666;">Processing your file...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <div class="results" id="results">
+            <h2>📊 Evaluation Results</h2>
+            <div class="charts-container">
+                <div class="chart-wrapper">
+                    <h3>CRSArena-Eval (ReDial)</h3>
+                    <canvas id="redialChart"></canvas>
+                </div>
+                <div class="chart-wrapper">
+                    <h3>CRSArena-Eval (OpenDialKG)</h3>
+                    <canvas id="opendialKGChart"></canvas>
+                </div>
+            </div>
+            <div class="system-table-wrapper">
+                <h3>Per-System Spearman Correlations</h3>
+                <div class="table-scroll">
+                    <table id="systemTable">
+                        <thead>
+                            <tr>
+                                <th>System</th>
+                                <th>Relevance</th>
+                                <th>Interestingness</th>
+                                <th>Understanding</th>
+                                <th>Task Completion</th>
+                                <th>Interest Arousal</th>
+                                <th>Efficiency</th>
+                                <th>Dialogue Overall</th>
+                            </tr>
+                        </thead>
+                        <tbody id="systemTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="turn-analysis-wrapper">
+                <h3>Turn-based Correlation Analysis</h3>
+                <canvas id="turnAnalysisChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="evaluator.js?v=7"></script>
+</body>
+</html>
