@@ -1,2 +1,1 @@
-# crsarena-eval
-CRSArena-Eval Interactive Interface
+# CRSArena-Eval Interactive Interface
