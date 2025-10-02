@@ -486,6 +486,17 @@ function formatNumber(num) {
     return parseFloat(value.toFixed(3));
 }
 
+function formatTableValue(value) {
+    if (value === null || value === undefined) {
+        return '—';
+    }
+    const numeric = Number(value);
+    if (Number.isNaN(numeric)) {
+        return '—';
+    }
+    return numeric.toFixed(3);
+}
+
 function displayResults(turnResults, dialogueResults) {
     // Show results section first so canvas elements are visible
     document.getElementById('results').style.display = 'block';
@@ -576,7 +587,7 @@ function renderComparisonChart() {
     }
 
     const datasetKey = chartState.dataset;
-    const { selection } = ensureSelectionForDataset(datasetKey);
+    const { selection, baselineKeys } = ensureSelectionForDataset(datasetKey);
     const metric = chartState.metric;
 
     const datasets = [];
@@ -601,8 +612,9 @@ function renderComparisonChart() {
     }
 
     const baselineKey = selection.seriesB;
+    let baselineSeries = null;
     if (baselineKey) {
-        const baselineSeries = resolveSeries(datasetKey, baselineKey);
+        baselineSeries = resolveSeries(datasetKey, baselineKey);
         if (baselineSeries) {
             const baselineData = baselineSeries[metric];
             if (baselineData && baselineData.length > 0) {
@@ -621,6 +633,8 @@ function renderComparisonChart() {
             }
         }
     }
+
+    renderComparisonTable(datasetKey, metric, uploadedSeries, baselineSeries, baselineKey, baselineKeys ? baselineKeys.length : 0);
 
     if (datasets.length === 0) {
         if (comparisonChartInstance) {
@@ -697,6 +711,55 @@ function formatSourceLabel(sourceKey) {
         return 'Your evaluator';
     }
     return sourceKey || 'N/A';
+}
+
+function renderComparisonTable(datasetKey, metric, uploadedSeries, baselineSeries, baselineKey, baselineCount) {
+    const tableBody = document.getElementById('comparisonTableBody');
+    const baselineHeader = document.getElementById('comparisonBaselineHeader');
+    const note = document.getElementById('comparisonTableNote');
+
+    if (!tableBody || !baselineHeader || !note) {
+        return;
+    }
+
+    baselineHeader.textContent = baselineKey ? `Baseline - ${formatSourceLabel(baselineKey)}` : 'Baseline';
+    note.textContent = '';
+    tableBody.innerHTML = '';
+
+    const yourData = uploadedSeries ? uploadedSeries[metric] : null;
+    const baselineData = baselineSeries ? baselineSeries[metric] : null;
+
+    if (!yourData || yourData.length === 0) {
+        note.textContent = 'No data available for your evaluator.';
+        return;
+    }
+
+    CHART_LABELS.forEach((label, index) => {
+        const row = document.createElement('tr');
+
+        const aspectCell = document.createElement('td');
+        aspectCell.textContent = label;
+
+        const yourCell = document.createElement('td');
+        yourCell.textContent = formatTableValue(yourData[index]);
+
+        const baselineCell = document.createElement('td');
+        baselineCell.textContent = baselineData ? formatTableValue(baselineData[index]) : '—';
+
+        row.appendChild(aspectCell);
+        row.appendChild(yourCell);
+        row.appendChild(baselineCell);
+
+        tableBody.appendChild(row);
+    });
+
+    if (!baselineKey) {
+        note.textContent = baselineCount === 0
+            ? 'No baselines are available for this dataset.'
+            : 'Select a baseline to populate the comparison column.';
+    } else if (!baselineData) {
+        note.textContent = 'Baseline data unavailable for the selected evaluator.';
+    }
 }
 
 function showError(message) {

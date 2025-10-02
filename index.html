@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRS Arena Evaluation Tool</title>
+    <title>CRSArena-Eval Interactive Meta-Evaluation Interface</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -16,54 +16,106 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f4f4f0;
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* ArXiv-style header */
+        .header {
+            background: #b31b1b;
+            color: white;
+            padding: 15px 0;
+            border-bottom: 3px solid #8b0000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: 0.8px;
+            color: #fff9f5;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+        }
+
+        .header .subtitle {
+            font-size: 1.05em;
+            opacity: 0.92;
+            margin-top: 6px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #ffe8e8;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            line-height: 1.5;
+        }
+
+        .header .subtitle a {
+            color: #fff5f5;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .header .subtitle a:hover {
+            color: #ffffff;
+            text-decoration: none;
         }
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 30px auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid #d0d0d0;
             padding: 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
             color: #333;
             margin-bottom: 10px;
-            font-size: 2.5em;
-            text-align: center;
+            font-size: 2em;
+            font-weight: normal;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            font-weight: normal;
+            color: #333;
+            margin: 30px 0 20px 0;
+            border-bottom: 2px solid #b31b1b;
+            padding-bottom: 8px;
         }
 
         .subtitle {
-            text-align: center;
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 1em;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         .upload-section {
-            background: #f8f9fa;
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
+            background: #fafaf8;
+            border: 2px solid #d0d0d0;
             padding: 40px;
             text-align: center;
             margin-bottom: 30px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .upload-section:hover {
-            border-color: #667eea;
-            background: #f0f1ff;
+            border-color: #b31b1b;
+            background: #fff;
         }
 
         .upload-section.dragover {
-            border-color: #667eea;
-            background: #e8ebff;
-            transform: scale(1.02);
+            border-color: #b31b1b;
+            background: #fff5f5;
         }
 
         .file-input-wrapper {
@@ -76,40 +128,49 @@
         }
 
         .upload-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #b31b1b;
             color: white;
-            padding: 15px 40px;
+            padding: 12px 30px;
             border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
+            font-size: 1em;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
+            transition: all 0.2s ease;
+            font-weight: normal;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            background: #8b0000;
         }
 
         .upload-icon {
-            font-size: 3em;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #b31b1b;
+        }
+
+        .upload-text {
+            color: #555;
+            font-size: 1em;
             margin-bottom: 20px;
-            color: #667eea;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         .loading {
             display: none;
             text-align: center;
             margin: 20px 0;
+            padding: 30px;
+            background: #fafaf8;
+            border: 1px solid #d0d0d0;
         }
 
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border: 3px solid #f0f0f0;
+            border-top: 3px solid #b31b1b;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
@@ -119,24 +180,30 @@
             100% { transform: rotate(360deg); }
         }
 
+        .loading-text {
+            margin-top: 15px;
+            color: #555;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
         .error {
-            background: #fee;
-            border: 1px solid #fcc;
-            color: #c33;
+            background: #ffe6e6;
+            border: 1px solid #d9534f;
+            color: #a94442;
             padding: 15px;
-            border-radius: 8px;
             margin: 20px 0;
             display: none;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         .success {
-            background: #efe;
-            border: 1px solid #cfc;
-            color: #3c3;
+            background: #dff0d8;
+            border: 1px solid #5cb85c;
+            color: #3c763d;
             padding: 15px;
-            border-radius: 8px;
             margin: 20px 0;
             display: none;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         .results {
@@ -146,10 +213,9 @@
 
         .results h2 {
             color: #333;
-            margin: 30px 0 15px 0;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #667eea;
-            text-align: center;
+            margin: 30px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #b31b1b;
         }
 
         .charts-container {
@@ -157,17 +223,27 @@
             gap: 30px;
             margin-top: 30px;
             flex-wrap: wrap;
-            justify-content: center;
+            align-items: flex-start;
         }
 
         .chart-wrapper {
-            flex: 1;
-            min-width: 450px;
-            max-width: 650px;
-            background: white;
-            padding: 20px;
+            flex: 1 1 460px;
+            min-width: 320px;
+            background: #fafaf8;
+            padding: 25px;
+            border: 1px solid #d0d0d0;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .table-wrapper {
+            flex: 1 1 360px;
+            min-width: 320px;
+            background: #fafaf8;
+            padding: 25px;
+            border: 1px solid #d0d0d0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
 
         .chart-header {
@@ -180,61 +256,152 @@
 
         .chart-header h3 {
             margin: 0;
-            color: #667eea;
-            font-size: 1.3em;
+            color: #333;
+            font-size: 1.2em;
+            font-weight: normal;
+            font-family: Georgia, serif;
         }
 
         .chart-select {
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #cbd5f5;
-            background-color: #f5f6ff;
-            color: #4a4a6a;
-            font-weight: 500;
+            padding: 6px 10px;
+            border: 1px solid #d0d0d0;
+            background-color: white;
+            color: #333;
+            font-weight: normal;
             cursor: pointer;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.95em;
+        }
+
+        .chart-select:hover {
+            border-color: #b31b1b;
         }
 
         .chart-control-group {
-            color: #4a4a6a;
-            font-weight: 600;
+            color: #555;
+            font-weight: normal;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.95em;
         }
 
         .global-chart-controls {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-end;
-            gap: 12px;
+            gap: 15px;
             margin-bottom: 20px;
+            padding: 15px;
+            background: #fafaf8;
+            border: 1px solid #d0d0d0;
         }
 
         .chart-wrapper canvas {
             max-height: 400px;
         }
 
+        .table-wrapper h3 {
+            margin: 0 0 15px 0;
+            color: #b31b1b;
+            font-size: 1.15em;
+            font-weight: 600;
+            font-family: Georgia, serif;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        .comparison-table thead th {
+            background: #f1e7e7;
+            color: #6b1a1a;
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid #d8c8c8;
+        }
+
+        .comparison-table tbody td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #e8dddd;
+            color: #333;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: #f9f4f4;
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #f3e8e8;
+        }
+
+        .table-note {
+            margin-top: 12px;
+            font-size: 0.85em;
+            color: #6b1a1a;
+        }
+
         .file-info {
-            background: #e8ebff;
+            background: #fafaf8;
             padding: 15px;
-            border-radius: 8px;
+            border: 1px solid #d0d0d0;
             margin-bottom: 20px;
             display: none;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         .file-info strong {
-            color: #667eea;
+            color: #b31b1b;
+        }
+
+        /* Footer in ArXiv style */
+        .footer {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .footer a {
+            color: #b31b1b;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="header-content">
+            <h1>CRSArena-Eval Interactive Meta-Evaluation Interface</h1>
+            <p class="subtitle">
+                CRSArena-Eval is proposed in
+                <a href="https://arxiv.org/abs/2506.00314" target="_blank" rel="noopener noreferrer">
+                    [Joko & Hasibi, 2025] FACE: A Fine-grained Reference Free Evaluator for Conversational Recommender Systems
+                </a>
+            </p>
+        </div>
+    </div>
+
     <div class="container">
-        <h1>🎯 CRS Arena Evaluation Tool</h1>
+        <h2>Upload Evaluation File</h2>
         <p class="subtitle">Upload your run file to evaluate against CRS Arena benchmarks</p>
 
         <div class="upload-section" id="uploadSection">
-            <div class="upload-icon">📤</div>
-            <p style="margin-bottom: 20px; color: #666; font-size: 1.1em;">
+            <div class="upload-icon">�</div>
+            <p class="upload-text">
                 Drag and drop your run file here or click to browse
             </p>
             <div class="file-input-wrapper">
@@ -247,31 +414,31 @@
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <p style="margin-top: 15px; color: #666;">Processing your file...</p>
+            <p class="loading-text">Processing your file...</p>
         </div>
 
         <div class="error" id="error"></div>
         <div class="success" id="success"></div>
 
         <div class="results" id="results">
-            <h2>📊 Evaluation Results</h2>
+            <h2>Evaluation Results</h2>
             <div class="global-chart-controls">
                 <label class="chart-control-group" for="datasetSelect">
-                    Dataset
+                    Dataset:
                     <select id="datasetSelect" class="chart-select">
                         <option value="redial">CRSArena-Eval (ReDial)</option>
                         <option value="opendialkg">CRSArena-Eval (OpenDialKG)</option>
                     </select>
                 </label>
                 <label class="chart-control-group" for="chartMetricSelect">
-                    Metric
+                    Metric:
                     <select id="chartMetricSelect" class="chart-select">
                         <option value="spearman">Spearman</option>
                         <option value="pearson">Pearson</option>
                     </select>
                 </label>
                 <label class="chart-control-group" for="sourceBSelect">
-                    Baseline
+                    Baseline:
                     <select id="sourceBSelect" class="chart-select"></select>
                 </label>
             </div>
@@ -281,6 +448,20 @@
                         <h3>CRSArena-Eval Comparison</h3>
                     </div>
                     <canvas id="comparisonChart"></canvas>
+                </div>
+                <div class="table-wrapper">
+                    <h3>Metric Comparison</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Your evaluator</th>
+                                <th id="comparisonBaselineHeader">Baseline</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonTableBody"></tbody>
+                    </table>
+                    <p class="table-note" id="comparisonTableNote"></p>
                 </div>
             </div>
         </div>
