@@ -7,7 +7,7 @@
       "task_completion": {"pearson_r": 0.405, "spearman_rho": 0.363},
       "efficiency": {"pearson_r": 0.101, "spearman_rho": 0.101},
       "interest_arousal": {"pearson_r": 0.217, "spearman_rho": 0.203},
-      "dialogue_overall": {"pearson_r": 0.564, "spearman_rho": 0.522}
+      "dialog_overall": {"pearson_r": 0.564, "spearman_rho": 0.522}
     },
     "LLM-CoT+ICL": {
       "relevance": {"pearson_r": 0.453, "spearman_rho": 0.446},
@@ -16,7 +16,7 @@
       "task_completion": {"pearson_r": 0.425, "spearman_rho": 0.400},
       "efficiency": {"pearson_r": 0.174, "spearman_rho": 0.174},
       "interest_arousal": {"pearson_r": 0.188, "spearman_rho": 0.174},
-      "dialogue_overall": {"pearson_r": 0.498, "spearman_rho": 0.472}
+      "dialog_overall": {"pearson_r": 0.498, "spearman_rho": 0.472}
     },
     "UniEval": {
       "relevance": {"pearson_r": 0.311, "spearman_rho": 0.288},
@@ -25,7 +25,7 @@
       "task_completion": {"pearson_r": null, "spearman_rho": null},
       "efficiency": {"pearson_r": null, "spearman_rho": null},
       "interest_arousal": {"pearson_r": null, "spearman_rho": null},
-      "dialogue_overall": {"pearson_r": 0.395, "spearman_rho": 0.387}
+      "dialog_overall": {"pearson_r": 0.395, "spearman_rho": 0.387}
     },
     "G-Eval": {
       "relevance": {"pearson_r": 0.490, "spearman_rho": 0.471},
@@ -34,7 +34,7 @@
       "task_completion": {"pearson_r": 0.351, "spearman_rho": 0.364},
       "efficiency": {"pearson_r": 0.488, "spearman_rho": 0.482},
       "interest_arousal": {"pearson_r": 0.332, "spearman_rho": 0.325},
-      "dialogue_overall": {"pearson_r": 0.577, "spearman_rho": 0.577}
+      "dialog_overall": {"pearson_r": 0.577, "spearman_rho": 0.577}
     },
     "FACE w/o train": {
       "relevance": {"pearson_r": 0.468, "spearman_rho": 0.462},
@@ -43,7 +43,7 @@
       "task_completion": {"pearson_r": 0.482, "spearman_rho": 0.392},
       "efficiency": {"pearson_r": 0.339, "spearman_rho": 0.423},
       "interest_arousal": {"pearson_r": 0.235, "spearman_rho": 0.255},
-      "dialogue_overall": {"pearson_r": 0.617, "spearman_rho": 0.555}
+      "dialog_overall": {"pearson_r": 0.617, "spearman_rho": 0.555}
     },
     "FACE": {
       "relevance": {"pearson_r": 0.549, "spearman_rho": 0.550},
@@ -52,7 +52,7 @@
       "task_completion": {"pearson_r": 0.570, "spearman_rho": 0.453},
       "efficiency": {"pearson_r": 0.484, "spearman_rho": 0.534},
       "interest_arousal": {"pearson_r": 0.447, "spearman_rho": 0.430},
-      "dialogue_overall": {"pearson_r": 0.712, "spearman_rho": 0.668}
+      "dialog_overall": {"pearson_r": 0.712, "spearman_rho": 0.668}
     }
   },
   "CRSArena-Eval_KG": {
@@ -63,7 +63,7 @@
       "task_completion": {"pearson_r": 0.538, "spearman_rho": 0.481},
       "efficiency": {"pearson_r": 0.137, "spearman_rho": 0.137},
       "interest_arousal": {"pearson_r": 0.425, "spearman_rho": 0.378},
-      "dialogue_overall": {"pearson_r": 0.655, "spearman_rho": 0.557}
+      "dialog_overall": {"pearson_r": 0.655, "spearman_rho": 0.557}
     },
     "LLM-CoT+ICL": {
       "relevance": {"pearson_r": 0.419, "spearman_rho": 0.408},
@@ -72,7 +72,7 @@
       "task_completion": {"pearson_r": 0.475, "spearman_rho": 0.434},
       "efficiency": {"pearson_r": 0.114, "spearman_rho": 0.114},
       "interest_arousal": {"pearson_r": 0.309, "spearman_rho": 0.279},
-      "dialogue_overall": {"pearson_r": 0.599, "spearman_rho": 0.521}
+      "dialog_overall": {"pearson_r": 0.599, "spearman_rho": 0.521}
     },
     "UniEval": {
       "relevance": {"pearson_r": 0.416, "spearman_rho": 0.428},
@@ -81,7 +81,7 @@
       "task_completion": {"pearson_r": null, "spearman_rho": null},
       "efficiency": {"pearson_r": null, "spearman_rho": null},
       "interest_arousal": {"pearson_r": null, "spearman_rho": null},
-      "dialogue_overall": {"pearson_r": 0.618, "spearman_rho": 0.659}
+      "dialog_overall": {"pearson_r": 0.618, "spearman_rho": 0.659}
     },
     "G-Eval": {
       "relevance": {"pearson_r": 0.533, "spearman_rho": 0.505},
@@ -90,7 +90,7 @@
       "task_completion": {"pearson_r": 0.430, "spearman_rho": 0.422},
       "efficiency": {"pearson_r": 0.485, "spearman_rho": 0.463},
       "interest_arousal": {"pearson_r": 0.424, "spearman_rho": 0.403},
-      "dialogue_overall": {"pearson_r": 0.656, "spearman_rho": 0.642}
+      "dialog_overall": {"pearson_r": 0.656, "spearman_rho": 0.642}
     },
     "FACE w/o train": {
       "relevance": {"pearson_r": 0.492, "spearman_rho": 0.486},
@@ -99,7 +99,7 @@
       "task_completion": {"pearson_r": 0.426, "spearman_rho": 0.411},
       "efficiency": {"pearson_r": 0.240, "spearman_rho": 0.419},
       "interest_arousal": {"pearson_r": 0.297, "spearman_rho": 0.322},
-      "dialogue_overall": {"pearson_r": 0.672, "spearman_rho": 0.557}
+      "dialog_overall": {"pearson_r": 0.672, "spearman_rho": 0.557}
     },
     "FACE": {
       "relevance": {"pearson_r": 0.543, "spearman_rho": 0.527},
@@ -108,7 +108,7 @@
       "task_completion": {"pearson_r": 0.593, "spearman_rho": 0.484},
       "efficiency": {"pearson_r": 0.518, "spearman_rho": 0.543},
       "interest_arousal": {"pearson_r": 0.449, "spearman_rho": 0.404},
-      "dialogue_overall": {"pearson_r": 0.766, "spearman_rho": 0.679}
+      "dialog_overall": {"pearson_r": 0.766, "spearman_rho": 0.679}
     }
   }
 }

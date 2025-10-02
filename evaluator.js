@@ -2,8 +2,8 @@
 // Ported from eval.py to JavaScript
 
 const TURN_ASPECTS = ["relevance", "interestingness"];
-const DIALOGUE_ASPECTS = ["understanding", "task_completion", "interest_arousal", "efficiency", "dialogue_overall"];
-const ALL_ASPECTS = [...TURN_ASPECTS, ...DIALOGUE_ASPECTS];
+const dialog_ASPECTS = ["understanding", "task_completion", "interest_arousal", "efficiency", "dialog_overall"];
+const ALL_ASPECTS = [...TURN_ASPECTS, ...dialog_ASPECTS];
 const CHART_LABELS = ALL_ASPECTS.map(aspect => aspect.replace(/_/g, ' '));
 const DATASET_ORDER = ["redial", "opendialkg"];
 const DATASET_LABELS = {
@@ -174,7 +174,7 @@ function parseGoldData(goldDataJson) {
         const convId = dialog.conv_id;
         dialGold.set(convId, dialog.dial_level_aggregated || {});
         
-        for (const turn of dialog.dialogue || []) {
+        for (const turn of dialog.dialog || []) {
             if (turn.role !== "ASST") {
                 continue;
             }
@@ -209,7 +209,7 @@ function parseRunData(runDataJson) {
         }
         
         const dialLevelPred = {};
-        for (const aspect of DIALOGUE_ASPECTS) {
+        for (const aspect of dialog_ASPECTS) {
             if (dialog.dial_level_pred && aspect in dialog.dial_level_pred) {
                 dialLevelPred[aspect] = parseFloat(dialog.dial_level_pred[aspect]);
             }
@@ -237,7 +237,7 @@ function systemFromConvId(convId) {
 }
 
 function computePerSystemSpearman(turnPreds, turnGold, dialPreds, dialGold) {
-    const aspects = [...TURN_ASPECTS, ...DIALOGUE_ASPECTS];
+    const aspects = [...TURN_ASPECTS, ...dialog_ASPECTS];
     const bySystem = new Map();
 
     function ensureSystem(systemId) {
@@ -277,7 +277,7 @@ function computePerSystemSpearman(turnPreds, turnGold, dialPreds, dialGold) {
         const systemId = systemFromConvId(convId);
         ensureSystem(systemId);
 
-        for (const aspect of DIALOGUE_ASPECTS) {
+        for (const aspect of dialog_ASPECTS) {
             if (!(aspect in goldAspects) || !(aspect in predAspects)) {
                 continue;
             }
@@ -353,7 +353,7 @@ function computeMetrics(records) {
     return metrics;
 }
 
-function buildSeriesFromResults(turnResults, dialogueResults, datasetKey) {
+function buildSeriesFromResults(turnResults, dialogResults, datasetKey) {
     const series = { pearson: [], spearman: [] };
 
     for (const aspect of TURN_ASPECTS) {
@@ -363,8 +363,8 @@ function buildSeriesFromResults(turnResults, dialogueResults, datasetKey) {
         series.spearman.push(formatNumber(datasetStats.spearman));
     }
 
-    for (const aspect of DIALOGUE_ASPECTS) {
-        const stats = dialogueResults[aspect] || {};
+    for (const aspect of dialog_ASPECTS) {
+        const stats = dialogResults[aspect] || {};
         const datasetStats = stats[datasetKey] || { pearson: NaN, spearman: NaN };
         series.pearson.push(formatNumber(datasetStats.pearson));
         series.spearman.push(formatNumber(datasetStats.spearman));
@@ -440,10 +440,10 @@ function evaluateTurnLevel(turnPreds, turnGold) {
     return results;
 }
 
-function evaluateDialogueLevel(dialPreds, dialGold) {
+function evaluatedialogLevel(dialPreds, dialGold) {
     const results = {};
     
-    for (const aspect of DIALOGUE_ASPECTS) {
+    for (const aspect of dialog_ASPECTS) {
         const records = [];
         
         for (const [convId, goldAspects] of dialGold) {
@@ -497,7 +497,7 @@ function formatTableValue(value) {
     return numeric.toFixed(3);
 }
 
-function displayResults(turnResults, dialogueResults) {
+function displayResults(turnResults, dialogResults) {
     // Show results section first so canvas elements are visible
     document.getElementById('results').style.display = 'block';
 
@@ -508,8 +508,8 @@ function displayResults(turnResults, dialogueResults) {
         return;
     }
 
-    chartDataCache.redial.uploaded = buildSeriesFromResults(turnResults, dialogueResults, 'redial');
-    chartDataCache.opendialkg.uploaded = buildSeriesFromResults(turnResults, dialogueResults, 'opendialkg');
+    chartDataCache.redial.uploaded = buildSeriesFromResults(turnResults, dialogResults, 'redial');
+    chartDataCache.opendialkg.uploaded = buildSeriesFromResults(turnResults, dialogResults, 'opendialkg');
 
     chartState.selections.redial.seriesA = 'uploaded';
     chartState.selections.opendialkg.seriesA = 'uploaded';
@@ -806,10 +806,10 @@ async function processFile(file) {
         
         // Evaluate
         const turnResults = evaluateTurnLevel(turnPreds, goldData.turnGold);
-        const dialogueResults = evaluateDialogueLevel(dialPreds, goldData.dialGold);
+        const dialogResults = evaluatedialogLevel(dialPreds, goldData.dialGold);
         
         // Display results
-        displayResults(turnResults, dialogueResults);
+        displayResults(turnResults, dialogResults);
         showLoading(false);
         
     } catch (error) {
