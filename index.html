@@ -163,123 +163,55 @@
         .chart-wrapper {
             flex: 1;
             min-width: 450px;
-            max-width: 550px;
+            max-width: 650px;
             background: white;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .chart-wrapper h3 {
-            text-align: center;
-            color: #667eea;
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-bottom: 20px;
+            gap: 16px;
+        }
+
+        .chart-header h3 {
+            margin: 0;
+            color: #667eea;
             font-size: 1.3em;
+        }
+
+        .chart-select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #cbd5f5;
+            background-color: #f5f6ff;
+            color: #4a4a6a;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .chart-control-group {
+            color: #4a4a6a;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .global-chart-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .chart-wrapper canvas {
             max-height: 400px;
-        }
-
-        .system-table-wrapper {
-            margin-top: 40px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .system-table-wrapper h3 {
-            text-align: center;
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-
-        .table-scroll {
-            overflow-x: auto;
-        }
-
-        #systemTable {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 0;
-        }
-
-        #systemTable th,
-        #systemTable td {
-            padding: 12px 15px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        #systemTable thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        #systemTable th {
-            font-weight: 600;
-            font-size: 0.9em;
-            white-space: nowrap;
-        }
-
-        #systemTable tbody tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        #systemTable tbody tr:hover {
-            background: #e8ebff;
-        }
-
-        #systemTable td:first-child {
-            font-weight: 600;
-            text-align: left;
-            color: #667eea;
-        }
-
-        #systemTable td {
-            font-family: "Courier New", monospace;
-            color: #555;
-
-        .turn-analysis-wrapper {
-            margin-top: 40px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .turn-analysis-wrapper h3 {
-            text-align: center;
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-
-        .turn-analysis-wrapper canvas {
-            max-height: 400px;
-        }
-        }
-
-        .system-chart-wrapper {
-            margin-top: 40px;
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .system-chart-wrapper h3 {
-            text-align: center;
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-
-        .system-chart-container {
-            position: relative;
-            height: 420px;
         }
 
         .file-info {
@@ -323,40 +255,33 @@
 
         <div class="results" id="results">
             <h2>📊 Evaluation Results</h2>
+            <div class="global-chart-controls">
+                <label class="chart-control-group" for="datasetSelect">
+                    Dataset
+                    <select id="datasetSelect" class="chart-select">
+                        <option value="redial">CRSArena-Eval (ReDial)</option>
+                        <option value="opendialkg">CRSArena-Eval (OpenDialKG)</option>
+                    </select>
+                </label>
+                <label class="chart-control-group" for="chartMetricSelect">
+                    Metric
+                    <select id="chartMetricSelect" class="chart-select">
+                        <option value="spearman">Spearman</option>
+                        <option value="pearson">Pearson</option>
+                    </select>
+                </label>
+                <label class="chart-control-group" for="sourceBSelect">
+                    Baseline
+                    <select id="sourceBSelect" class="chart-select"></select>
+                </label>
+            </div>
             <div class="charts-container">
                 <div class="chart-wrapper">
-                    <h3>CRSArena-Eval (ReDial)</h3>
-                    <canvas id="redialChart"></canvas>
+                    <div class="chart-header">
+                        <h3>CRSArena-Eval Comparison</h3>
+                    </div>
+                    <canvas id="comparisonChart"></canvas>
                 </div>
-                <div class="chart-wrapper">
-                    <h3>CRSArena-Eval (OpenDialKG)</h3>
-                    <canvas id="opendialKGChart"></canvas>
-                </div>
-            </div>
-            <div class="system-table-wrapper">
-                <h3>Per-System Spearman Correlations</h3>
-                <div class="table-scroll">
-                    <table id="systemTable">
-                        <thead>
-                            <tr>
-                                <th>System</th>
-                                <th>Relevance</th>
-                                <th>Interestingness</th>
-                                <th>Understanding</th>
-                                <th>Task Completion</th>
-                                <th>Interest Arousal</th>
-                                <th>Efficiency</th>
-                                <th>Dialogue Overall</th>
-                            </tr>
-                        </thead>
-                        <tbody id="systemTableBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="turn-analysis-wrapper">
-                <h3>Turn-based Correlation Analysis</h3>
-                <canvas id="turnAnalysisChart"></canvas>
             </div>
         </div>
     </div>
